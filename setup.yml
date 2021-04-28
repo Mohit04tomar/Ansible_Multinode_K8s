@@ -1,0 +1,15 @@
+- hosts: localhost
+  roles:
+          - name: "Launching Instance on AWS"
+            role: "instance_launch"
+
+- hosts: "tag_Name_master"
+  roles:
+          - name: "Configuring Kubernetess Master Node"
+            role: "k8s_master"
+
+- hosts: ["tag_Name_slave1","tag_Name_slave2"]
+  roles:
+          - name: "configuartion k8s master node"
+            role: "k8s_slave"
+

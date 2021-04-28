@@ -1,0 +1,26 @@
+---
+# tasks file for instance_launch
+#
+#
+  - name: "Launching EC2 Instance"
+    ec2:
+        key_name: "{{  master_key_name  }}"
+        instance_type: "{{  instance_type  }}"
+        image: "{{ image_id  }}"
+        instance_tags:
+            Name: "{{  item  }}"
+        region: "{{  region  }}"
+        group_id: "{{  sg_group  }}"
+        state: present
+        wait: yes
+        count: "{{  count  }}"
+    loop: "{{ instance_name  }}"
+    register: x
+  
+  
+  - name: "Wait for 120 Seconds"
+    pause:
+            seconds: 120
+  
+  - name: "Meta at Work"
+    meta: refresh_inventory

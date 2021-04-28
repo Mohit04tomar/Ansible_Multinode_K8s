@@ -1,0 +1,49 @@
+---
+# tasks file for k8s_slave
+
+- name: "Configuration Yum Repository in K8s Master"
+  yum_repository:
+          name: "K8s_yum_repo"
+          description: "YUM_Repository for K8s"
+          baseurl: "https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64"
+          gpgcheck: no
+
+- name: "Installing Software"
+  package:
+          name: "{{  item  }}"
+          state: present
+  loop: "{{ package_name  }}"
+
+- name: "Starting Services"
+  service:
+          name: "{{ item  }}"
+          state: started
+  loop: "{{  package  }}"
+
+- name: "Changing the .cgroupdriver yo syatemd"
+  copy:
+          dest: "/etc/docker/daemon.json"
+          content: '{
+                  "exec-opts": ["native.cgroupdriver=systemd"]
+                     }'
+
+- name: "Restarting Docker Service"
+  service:
+          name: "docker"
+          state: restarted
+
+- name: "Installing iproute-tc package"
+  package:
+          name: "iproute-tc"
+          state: present
+
+- name: "Bridge to 1"
+  shell: echo "1"> /proc/sys/net/bridge/bridge-nf-call-iptables
+
+- name: "Joining the K8s worker nodes to the maste node"
+  command: "{{  hostvars['k8s_token']['token']  }}"
+
+- name: "Debug Joining command for the worker nodes"
+  debug:
+          msg: "configured as worker node"
+

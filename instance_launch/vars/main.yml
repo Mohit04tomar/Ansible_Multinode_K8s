@@ -1,0 +1,15 @@
+---
+# vars file for instance_launch
+#
+
+key_name: "AWSKey"
+region: "ap-south-1"
+image_id: "ami-0bcf5425cdc1d8a85"
+sg_group: "sg-04ac089470d13eb3e"
+instance_type: "t2.micro"
+count: 1
+master_key_name: "AWS Key"
+instance_name:
+        - "master"
+        - "slave1"
+        - "slave2"
