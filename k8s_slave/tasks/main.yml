@@ -1,7 +1,7 @@
 ---
 # tasks file for k8s_slave
 
-- name: "Configuration Yum Repository in K8s Master"
+- name: "Configuration Yum Repository in K8s Slave"
   yum_repository:
           name: "K8s_yum_repo"
           description: "YUM_Repository for K8s"
